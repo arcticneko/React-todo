@@ -12,6 +12,7 @@ pro-react-redux-master/
 
 # production
 /build
+/storage
 
 # misc
 .DS_Store
