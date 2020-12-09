@@ -5,14 +5,15 @@ import './todo-list.css';
 
 // получаем todos в index.js сверху и передаем в TodoList
 
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos, onDeleted }) => {
   const elements = todos.map((item) => {
     const { id, ...itemProps} = item; // обычная деструктуризация
 
     return (
       // элементы массива это JSX эл-ты которые после вставляем в <ul>
       <li key={id} className='list-group-item todo-list-item'>
-        <TodoListItem {...itemProps} />
+        <TodoListItem {...itemProps} 
+        onDeleted={ () => onDeleted(id)}/>
       </li>
     )
   })

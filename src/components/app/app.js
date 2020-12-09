@@ -1,30 +1,80 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
+import ItemAddForm from '../item-add-form';
 
 import './app.css'
+import itemAddForm from '../item-add-form';
 
 // компонент App просто собирает сртуктуру, по этому оставляем его здесь
-const App = () => {
-  const todoData = [
-    { label: "Drink Cofee", important: false, id: 1 },
-    { label: "Make Awesome App", important: true, id: 2 },
-    { label: "Have a lunch", important: false, id: 3 },
-  ]
+export default class App extends Component {
 
-  return (
-    <div>
-      <AppHeader />
-      <SearchPanel />
-      <TodoList todos={todoData} />
-    </div>
-  )
+	maxId = 100; // никак не влияет на рендеринг, по этому не в state => можем менять
+
+	state = {
+		todoData: [
+			{ label: "Drink Cofee", important: false, id: 1 },
+			{ label: "Make Awesome App", important: true, id: 2 },
+			{ label: "Have a lunch", important: false, id: 3 },
+		]
+	}
+
+	deleteItem = (id) => {
+		this.setState(({ todoData }) => {
+			const idx = todoData.findIndex((el) => el.id === id)
+
+			const newArray = [
+				...todoData.slice(0, idx),
+				...todoData.slice(idx + 1),
+			];
+
+			return {
+				todoData: newArray
+			};
+		});
+	};
+
+	addItem = (text) => {
+		const newItem = {
+			label: text,
+			important: false,
+			id: this.maxId++,
+		}
+
+		this.setState(({ todoData }) => {
+			const newArray = [
+				...todoData,
+				newItem,
+			];
+
+			return {
+				todoData: newArray
+			}
+		})
+	}
+
+	render() {
+		return (
+			<div className="todo-app">
+				<AppHeader toDo={1} done={3} />
+				<div className="top-panel d-flex">
+					<SearchPanel />
+					<ItemStatusFilter />
+				</div>
+
+				<TodoList
+					todos={this.state.todoData}
+					onDeleted={this.deleteItem} />
+
+				<ItemAddForm onItemAdded={this.addItem} />
+			</div>
+		)
+	}
 }
 
-export default App;
 
 //<TodoList todos={todoData} /> передаем массив
