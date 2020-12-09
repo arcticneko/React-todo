@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './item-status-filter.css';
 
-export default class ItemStatusFilter extends React.Component {
+export default class ItemStatusFilter extends Component {
 
   render() {
     return (

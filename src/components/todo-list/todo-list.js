@@ -7,7 +7,7 @@ import './todo-list.css';
 
 const TodoList = ({ todos }) => {
   const elements = todos.map((item) => {
-    const { id, ...itemProps} = item;
+    const { id, ...itemProps} = item; // обычная деструктуризация
 
     return (
       // элементы массива это JSX эл-ты которые после вставляем в <ul>
