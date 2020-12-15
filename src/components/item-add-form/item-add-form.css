@@ -1,5 +1,8 @@
 .item-add-form {
-  margin-top: 10px;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .bottom-panel .new-todo-label {
@@ -7,3 +10,4 @@
   flex-grow: 1;
   margin-right: 3px;
 }
+

@@ -1,0 +1,15 @@
+.top-panel {
+	height: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.search-panel {
+	flex-grow: 1;
+	margin-right: 3px;
+}
+
+.btn-group {
+	height: min-content;
+}
