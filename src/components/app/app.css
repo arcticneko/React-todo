@@ -6,3 +6,7 @@
 .top-panel {
   margin: 1rem 0;
 }
+
+.visually-hidden {
+	display: none;
+}

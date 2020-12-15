@@ -10,7 +10,7 @@ const TodoList = ({ todos, onDeleted,
 										onToggleDone }) => {
 											
   const elements = todos.map((item) => {
-    const { id, ...itemProps} = item; // обычная деструктуризация
+    const { id, display, ...itemProps} = item; // обычная деструктуризация
 
     return (
       // элементы массива это JSX эл-ты которые после вставляем в <ul>
