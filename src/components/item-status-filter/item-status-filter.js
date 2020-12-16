@@ -4,35 +4,48 @@ import './item-status-filter.css';
 
 export default class ItemStatusFilter extends Component {
 
-	state = {
-		filter: 'all'
-	}
+	buttons = [
+		{ name: 'all', label: 'All'},
+		{ name: 'active', label: 'Active'},
+		{ name: 'done', label: 'Done'},
+	]
 
-	onClickChange = (evt) => {
-		const term = evt.target.value;
+	
+	// state = {
+	// 	filter: 'all'
+	// }
 
-		this.setState({
-			filter: term
-		})
+	// onClickChange = (evt) => {
+	// 	const term = evt.target.value;
 
-		this.props.onStatusClickChange(term)
-	}
+	// 	this.setState({
+	// 		filter: term
+	// 	})
+
+	// 	this.props.onStatusClickChange(term)
+	// }
 
   render() {
+
+		const { filter, onFilterChange } = this.props;
+
+		const buttons = this.buttons.map(( {name, label} ) => {
+			const isActive = filter === name;
+			const clazz =  isActive? 'btn-info' : 'btn-outline-secondary'
+
+			return (
+				<button type='button' 
+								className={`btn ${clazz}`}
+								key={name}
+								onClick={() => onFilterChange(name)}>
+					{label}
+				</button>
+			)
+		})
+
     return (
 			<div className='btn-group'>
-        <button type='button'
-								className='btn btn-info'
-								value='all'
-								onClick={this.onClickChange}>All</button>
-        <button type='button' 
-								className='btn btn-outline-secondary'
-								value='active'
-								onClick={this.onClickChange}>Active</button>
-        <button type='button' 
-								className='btn btn-outline-secondary'
-								value='done'
-								onClick={this.onClickChange}>Done</button>
+        {buttons}
       </div>
     )
   }

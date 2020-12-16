@@ -20,8 +20,8 @@ export default class App extends Component {
 			this.createTodoItem("Make Awesome App"),
 			this.createTodoItem("Have a lunch"),
 		],
-		term : '',
-		termFilter: ''
+		term: '',
+		filter: 'all'
 	}
 
 	createTodoItem(label) {
@@ -29,7 +29,6 @@ export default class App extends Component {
 			label,
 			important: false,
 			done: false,
-			display: true,
 			id: this.maxId++,
 		}
 	}
@@ -66,10 +65,10 @@ export default class App extends Component {
 
 	toggleProperty(arr, id, propName) {
 		const idx = arr.findIndex((el) => el.id === id)
-			
+
 		const oldItem = arr[idx];
-		const newItem = {...oldItem, [propName]: !oldItem[propName]}; // перезапись старого done
-	
+		const newItem = { ...oldItem, [propName]: !oldItem[propName] }; // перезапись старого done
+
 		return [
 			...arr.slice(0, idx),
 			newItem, // вставка обновленого эл-та
@@ -100,8 +99,8 @@ export default class App extends Component {
 
 		return items.filter((item) => {
 			return item.label
-			.toLowerCase()
-			.indexOf(term.toLowerCase()) > -1;
+				.toLowerCase()
+				.indexOf(term.toLowerCase()) > -1;
 		})
 	}
 
@@ -109,14 +108,27 @@ export default class App extends Component {
 		this.setState({ term })
 	}
 
-	onStatusClickChange = (termFilter) => {
-		this.setState({ termFilter })
+	onFilterChange = (filter) => {
+		this.setState({ filter })
+	}
+
+	onFilter(items, term) {
+		switch (term) {
+			case 'all':
+				return items;
+			case 'active':
+				return items.filter((elem) => !elem.done)
+			case 'done':
+				return items.filter((elem) => elem.done)
+			default:
+				return items;
+		}
 	}
 
 	render() {
-		const { todoData, term } = this.state;
+		const { todoData, term, filter } = this.state;
 
-		const visibleItems = this.onSearch(todoData, term);
+		const visibleItems = this.onFilter(this.onSearch(todoData, term), filter); // сначала поиск, по результату фильтрация
 
 		const doneCount = todoData.filter((el) => el.done).length;
 		const todoCount = todoData.length - doneCount;
@@ -125,17 +137,18 @@ export default class App extends Component {
 			<div className="todo-app">
 				<AppHeader toDo={todoCount} done={doneCount} />
 				<div className="top-panel d-flex">
-					<SearchPanel 
-					onSearchChange={this.onSearchChange}/>
-					<ItemStatusFilter 
-					onStatusClickChange={this.onStatusClickChange}/>
+					<SearchPanel
+						onSearchChange={this.onSearchChange} />
+					<ItemStatusFilter	
+						filter={filter} 
+						onFilterChange={this.onFilterChange} />
 				</div>
 
 				<TodoList
 					todos={visibleItems}
-					onDeleted={this.deleteItem} 
+					onDeleted={this.deleteItem}
 					onToggleImportant={this.onToggleImportant}
-					onToggleDone={this.onToggleDone}	/>
+					onToggleDone={this.onToggleDone} />
 
 				<ItemAddForm onItemAdded={this.addItem} />
 			</div>
